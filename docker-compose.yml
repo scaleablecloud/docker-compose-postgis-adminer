@@ -1,0 +1,26 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: mdillon/postgis
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${KDBPASS}
+      POSTGRES_USER: ${KDBUSER}
+      POSTGRES_DB: ${KDBNAME}
+    volumes:
+      - db_data:/var/lib/mysql
+      - $PWD/postgres.conf:/etc/postgresql/postgresql.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    ports:
+      - ${PORT_DB}:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - ${PORT_GUI}:8080
+volumes:
+  db_data: {}
